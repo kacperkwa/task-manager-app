@@ -1,0 +1,26 @@
+:root {
+	/* background color */
+	--background-color: #20212c;
+	/* text color */
+	--text-color: #ffffff;
+	--text-color-secondary: #828fa3;
+	/* button primary */
+	--button-color: #635fc7;
+	--button-color-hover: #a8a4ff;
+	--button-text-color: #ffffff;
+	/* button secondary */
+	--light-button-color: #ffffff;
+	--light-button-text-color: #635fc7;
+	--light-button-color-hover: #625fc707;
+	/* button delete */
+	--delete-button-color: #ea5555;
+	--delete-button-color-hover: #ff9898;
+}
+
+[data-theme='light'] {
+	/* background color */
+	--background-color: #f4f7fd;
+	/* text color */
+	--text-color: #000000;
+	--text-color-secondary: #828fa3;
+}
