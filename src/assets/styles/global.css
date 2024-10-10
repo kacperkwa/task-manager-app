@@ -1,0 +1,34 @@
+@import 'reset.css';
+@import 'variables.css';
+
+body {
+	background-color: var(--background-color);
+	color: var(--text-color);
+}
+button {
+	cursor: pointer;
+	padding: 0.5rem 2rem;
+	border-radius: 20px;
+	font-size: 13px;
+}
+.primary-button {
+	background-color: var(--button-color);
+	color: var(--button-text-color);
+}
+.primary-button:hover {
+	background-color: var(--button-color-hover);
+}
+.light-button {
+	background-color: var(--light-button-color);
+	color: var(--light-button-text-color);
+}
+.light-button:hover {
+	background-color: var(--button-color-hover);
+}
+.delete-button {
+	background-color: var(--delete-button-color);
+	color: var(--button-text-color);
+}
+.delete-button:hover {
+	background-color: var(--delete-button-color-hover);
+}
