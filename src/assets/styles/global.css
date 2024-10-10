@@ -11,6 +11,7 @@ button {
 	border: none;
 	border-radius: 20px;
 	font-size: 13px;
+	transition: background-color 0.3s ease;
 }
 .primary-button {
 	background-color: var(--button-color);
