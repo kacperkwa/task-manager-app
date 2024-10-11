@@ -1,8 +1,6 @@
 <template>
 	<loginPage />
-	<button class="primary-button" @click="toggleTheme">change theme</button>
-	<button class="delete-button" @click="toggleTheme">delete button</button>
-	<button class="light-button" @click="toggleTheme">light button</button>
+	<button @click="toggleTheme">change</button>
 </template>
 
 <script lang="ts" setup>
