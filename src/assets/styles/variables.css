@@ -1,20 +1,23 @@
 :root {
 	/* background color */
 	--background-color: #20212c;
+
 	/* text color */
 	--text-color: #ffffff;
 	--text-color-secondary: #828fa3;
 	/* button primary */
-	--button-color: #635fc7;
-	--button-color-hover: #a8a4ff;
-	--button-text-color: #ffffff;
+	--button-color-primary: #635fc7;
+	--button-text-color-primary: #ffffff;
+	--button-color-hover-primary: #a8a4ff;
 	/* button secondary */
-	--light-button-color: #ffffff;
-	--light-button-text-color: #635fc7;
-	--light-button-color-hover: #625fc707;
+	--button-color-secondary: #ffffff;
+	--button-text-color-secondary: #635fc7;
+	--button-color-hover-secondary: #a8a4ff;
 	/* button delete */
 	--delete-button-color: #ea5555;
 	--delete-button-color-hover: #ff9898;
+	/* header */
+	--header-background-color: #2b2c37;
 }
 
 [data-theme='light'] {
@@ -23,4 +26,9 @@
 	/* text color */
 	--text-color: #000000;
 	--text-color-secondary: #828fa3;
+	/* button secondary */
+	--button-color-secondary: rgba(99, 95, 199, 0.1);
+	--button-color-hover-secondary: rgba(99, 95, 199, 0.3);
+	/* header */
+	--header-background-color: #ffffff;
 }

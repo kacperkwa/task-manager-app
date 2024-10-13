@@ -2,30 +2,35 @@
 @import 'variables.css';
 
 body {
+	font-family: 'Plus Jakarta Sans', sans-serif;
+	letter-spacing: 0.2rem;
 	background-color: var(--background-color);
 	color: var(--text-color);
 }
+/* buttons */
 button {
 	cursor: pointer;
 	padding: 0.5rem 2rem;
 	border: none;
 	border-radius: 20px;
 	font-size: 13px;
-	transition: background-color 0.3s ease;
 }
 .primary-button {
-	background-color: var(--button-color);
-	color: var(--button-text-color);
+	background-color: var(--button-color-primary);
+	color: var(--button-text-color-primary);
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
 .primary-button:hover {
-	background-color: var(--button-color-hover);
+	background-color: var(--button-color-hover-primary);
 }
-.light-button {
-	background-color: var(--light-button-color);
-	color: var(--light-button-text-color);
+.secondary-button {
+	background-color: var(--button-color-secondary);
+	color: var(--button-text-color-secondary);
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
-.light-button:hover {
-	background-color: var(--button-color-hover);
+.secondary-button:hover {
+	background-color: var(--button-color-hover-secondary);
+	color: var(--button-text-color-primary);
 }
 .delete-button {
 	background-color: var(--delete-button-color);
