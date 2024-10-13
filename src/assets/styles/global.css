@@ -14,11 +14,11 @@ button {
 	border: none;
 	border-radius: 20px;
 	font-size: 13px;
-	transition: background-color 0.3s ease, color 0.3s ease;
 }
 .primary-button {
 	background-color: var(--button-color-primary);
 	color: var(--button-text-color-primary);
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
 .primary-button:hover {
 	background-color: var(--button-color-hover-primary);
@@ -26,6 +26,7 @@ button {
 .secondary-button {
 	background-color: var(--button-color-secondary);
 	color: var(--button-text-color-secondary);
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
 .secondary-button:hover {
 	background-color: var(--button-color-hover-secondary);
@@ -37,10 +38,4 @@ button {
 }
 .delete-button:hover {
 	background-color: var(--delete-button-color-hover);
-}
-/* header */
-header {
-	background-color: var(--header-background-color);
-	padding: 1.5rem 2rem;
-	width: 100%;
 }

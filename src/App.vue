@@ -1,10 +1,12 @@
 <template>
+	<TheHeader />
 	<loginPage />
 	<button @click="toggleTheme">change</button>
 </template>
 
 <script lang="ts" setup>
 import loginPage from './components/login/loginPage.vue';
+import TheHeader from './components/layout/TheHeader.vue';
 
 const toggleTheme = () => {
 	const currentTheme = document.documentElement.getAttribute('data-theme');

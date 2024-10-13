@@ -1,8 +1,5 @@
 <template>
 	<div class="login-page">
-		<header class="login-page__header">taskMate
-			<img src="../../assets/img/logo.png" alt="">
-		</header>
 		<main class="login-page__main">
 			<h1 class="login-page__title">Welcome to taskMate!</h1>
 			<p class="login-page__info">
@@ -19,7 +16,9 @@
 	</div>
 </template>
 
-<script setup lang="js"></script>
+<script setup lang="js">
+import TheHeader from '../layout/TheHeader.vue';
+</script>
 
 <style scoped>
 .login-page {
@@ -28,11 +27,7 @@
 	align-items: center;
 	justify-content: center;
 	min-height: 100vh;
-}
-.login-page__header {
-	position: absolute;
-	top: 0;
-	left: 0;
+	padding-top: 4rem;
 }
 .login-page__title {
 	text-align: center;
@@ -43,6 +38,7 @@
 .login-page__main {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	gap: 2rem;
 	max-width: 400px;
 	padding: 0 2rem;
