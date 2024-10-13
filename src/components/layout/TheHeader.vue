@@ -18,7 +18,7 @@ import ArrowButton from '../UI/ArrowButton.vue';
 import DottedButton from '../UI/DottedButton.vue';
 import AddButton from '../UI/AddButton.vue';
 
-const logoSrc = ref('../../assets/img/logo-taskmate-bulb.png');
+const logoSrc = ref('src/assets/img/logo-taskmate-bulb.png');
 const updateLogo = () => {
 	const windowWidth = window.innerWidth;
 	if (windowWidth < 768) {
