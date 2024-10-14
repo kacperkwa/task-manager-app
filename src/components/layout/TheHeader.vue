@@ -1,7 +1,7 @@
 <template>
 	<header class="header">
 		<div class="header__left-container">
-			<img :src="logoSrc" alt="logo" />
+			<img :class="logo" :src="logoSrc" alt="logo" v-show="logoLoaded" />
 			<div class="header__board-name" v-if="isLoggedIn">Board Name</div>
 			<ArrowButton />
 		</div>
@@ -12,27 +12,49 @@
 	</header>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-const isLoggedIn = ref(false);
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import ArrowButton from '../UI/ArrowButton.vue';
 import DottedButton from '../UI/DottedButton.vue';
 import AddButton from '../UI/AddButton.vue';
 
-const logoSrc = ref('/img/logo-taskmate.png');
+const isLoggedIn = ref(true);
+const logoLoaded = ref(false);
+let logo = ref('header-log-small');
+let logoSrc = ref('/img/logo-taskmate.png');
+
 const updateLogo = () => {
 	const windowWidth = window.innerWidth;
-	if (windowWidth < 768) {
-		logoSrc.value = '/img/logo-taskmate-bulb.png';
-		console.log(logoSrc.value);
-	} else {
-		logoSrc.value = '/img/logo-taskmate.png';
-		console.log(logoSrc.value);
+	const newLogo =
+		windowWidth < 768
+			? '/img/logo-taskmate-bulb.png'
+			: '/img/logo-taskmate.png';
+
+	const img = new Image();
+	img.src = logoSrc.value;
+	img.onload = () => {
+		logoLoaded.value = true;
+	};
+
+	logo.value = windowWidth < 768 ? 'header-logo-small' : 'header-logo';
+
+	if (newLogo !== logoSrc.value) {
+		logoLoaded.value = false;
+		logoSrc.value = newLogo;
 	}
 };
 
 onMounted(() => {
 	updateLogo();
 	window.addEventListener('resize', updateLogo);
+});
+
+watch(logoSrc, () => {
+	const img = new Image();
+	img.src = logoSrc.value;
+
+	img.onload = () => {
+		logoLoaded.value = true; //
+	};
 });
 
 onBeforeUnmount(() => {
@@ -52,8 +74,11 @@ onBeforeUnmount(() => {
 	padding: 1rem 1.5rem;
 	z-index: 1000;
 }
-.header img {
+.header-logo-small {
 	width: 40px;
+}
+.header-logo {
+	width: 190px;
 }
 .header__left-container,
 .header__right-container {
@@ -67,10 +92,5 @@ onBeforeUnmount(() => {
 	font-size: 1.6rem;
 	font-weight: 500;
 	margin-left: 1rem;
-}
-@media (min-width: 768px) {
-	.header img {
-		width: 190px;
-	}
 }
 </style>
