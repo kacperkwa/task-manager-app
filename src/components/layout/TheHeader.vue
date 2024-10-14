@@ -18,14 +18,14 @@ import ArrowButton from '../UI/ArrowButton.vue';
 import DottedButton from '../UI/DottedButton.vue';
 import AddButton from '../UI/AddButton.vue';
 
-const logoSrc = ref('../public/img/logo-taskmate.png');
+const logoSrc = ref('/img/logo-taskmate.png');
 const updateLogo = () => {
 	const windowWidth = window.innerWidth;
 	if (windowWidth < 768) {
-		logoSrc.value = '../public/img/logo-taskmate-bulb.png';
+		logoSrc.value = '/img/logo-taskmate-bulb.png';
 		console.log(logoSrc.value);
 	} else {
-		logoSrc.value = '../public/img/logo-taskmate.png';
+		logoSrc.value = '/img/logo-taskmate.png';
 		console.log(logoSrc.value);
 	}
 };
