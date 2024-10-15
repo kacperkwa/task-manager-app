@@ -30,23 +30,21 @@
 	</div>
 </template>
 
-<script setup lang="js">
+<script setup lang="ts">
 import { ref } from 'vue';
-import TheHeader from '../layout/TheHeader.vue';
 import loginPanel from './loginPanel.vue';
 const isLogIn = ref(true);
 const loginModal = ref(false);
-const openLoginModal = (isLogInValue) => {
+const openLoginModal = (isLogInValue: boolean) => {
 	loginModal.value = true;
 	isLogIn.value = isLogInValue;
-
-}
+};
 const onChangeAction = () => {
 	isLogIn.value = !isLogIn.value;
-}
+};
 const closeLoginModal = () => {
 	loginModal.value = false;
-}
+};
 </script>
 
 <style scoped>
