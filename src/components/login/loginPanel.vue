@@ -43,21 +43,21 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { defineEmits, ref, defineProps } from 'vue';
+import { defineEmits, defineProps } from 'vue';
 
 const props = defineProps({
 	isLogIn: Boolean
 });
-interface LoginState {
-	email: string;
-	password: string;
-}
-interface SignupState {
-	email: string;
-	userName: string;
-	password: string;
-	confirmPassword: string;
-}
+// interface LoginState {
+// 	email: string;
+// 	password: string;
+// }
+// interface SignupState {
+// 	email: string;
+// 	userName: string;
+// 	password: string;
+// 	confirmPassword: string;
+// }
 const emit = defineEmits(['closePanel', 'changeAction']);
 const closeLoginModal = () => {
 	emit('closePanel');
