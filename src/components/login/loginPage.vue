@@ -9,15 +9,44 @@
 				tasks with ease.
 			</p>
 			<div class="login-page__button-container">
-				<button class="login-page__button primary-button">Log in</button>
-				<button class="login-page__button secondary-button">Sign up</button>
+				<button
+					class="login-page__button primary-button"
+					@click="openLoginModal(true)">
+					Log in
+				</button>
+				<button
+					@click="openLoginModal(false)"
+					class="login-page__button secondary-button">
+					Sign up
+				</button>
 			</div>
+
+			<loginPanel
+				v-if="loginModal"
+				@closePanel="closeLoginModal"
+				:isLogIn="isLogIn"
+				@changeAction="onChangeAction"></loginPanel>
 		</main>
 	</div>
 </template>
 
 <script setup lang="js">
+import { ref } from 'vue';
 import TheHeader from '../layout/TheHeader.vue';
+import loginPanel from './loginPanel.vue';
+const isLogIn = ref(true);
+const loginModal = ref(false);
+const openLoginModal = (isLogInValue) => {
+	loginModal.value = true;
+	isLogIn.value = isLogInValue;
+
+}
+const onChangeAction = () => {
+	isLogIn.value = !isLogIn.value;
+}
+const closeLoginModal = () => {
+	loginModal.value = false;
+}
 </script>
 
 <style scoped>

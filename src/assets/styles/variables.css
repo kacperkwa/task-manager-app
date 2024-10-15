@@ -18,6 +18,8 @@
 	--delete-button-color-hover: #ff9898;
 	/* header */
 	--header-background-color: #2b2c37;
+	/* inputs */
+	--input-border-color: rgba(130, 143, 163, 25);
 }
 
 [data-theme='light'] {

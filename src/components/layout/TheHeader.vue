@@ -17,7 +17,7 @@ import ArrowButton from '../UI/ArrowButton.vue';
 import DottedButton from '../UI/DottedButton.vue';
 import AddButton from '../UI/AddButton.vue';
 
-const isLoggedIn = ref(true);
+const isLoggedIn = ref(false);
 const logoLoaded = ref(false);
 let logo = ref('header-log-small');
 let logoSrc = ref('/img/logo-taskmate.png');
