@@ -1,6 +1,6 @@
 <template>
 	<button class="arrow-button">
-		<i class="fa-solid fa-angle-up"></i>
+		<i class="fa-solid fa-angle-down"></i>
 	</button>
 </template>
 

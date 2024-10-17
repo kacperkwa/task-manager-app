@@ -13,22 +13,32 @@
 					: `Ready to take your task management to the next level? Signing up is the first step toward a more organized and productive life! With TaskMate, you’ll have the tools to conquer your to-do list and achieve your goals.`
 			}}
 		</p>
-		<form class="login-panel__form">
+		<form @submit.prevent="handleSubmit" class="login-panel__form">
 			<label for="email">Email Adress:</label>
-			<input type="text" id="email" />
+			<input v-model="email" type="text" id="email" />
+
 			<label v-if="!props.isLogIn" for="username">User name:</label>
-			<input v-if="!props.isLogIn" type="text" id="username" />
+			<input
+				v-model="userName"
+				v-if="!props.isLogIn"
+				type="text"
+				id="username" />
+
 			<label for="password">Password:</label>
-			<input type="password" id="password" />
+			<input v-model="password" type="password" id="password" />
+
 			<label v-if="!props.isLogIn" for="confirm-password"
 				>Confirm Password:</label
 			>
 			<input v-if="!props.isLogIn" type="password" id="confirm-password" />
 		</form>
 		<div class="login-panel__button-container">
-			<button class="login-panel__button primary-button">
+			<button
+				@click="handleSubmit"
+				class="login-panel__button primary-button">
 				{{ props.isLogIn ? `Log In` : `Sign Up` }}
 			</button>
+
 			<p>
 				{{
 					isLogIn ? `Don't have an account?` : `Already have an account?`
@@ -43,27 +53,40 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { defineEmits, defineProps } from 'vue';
+import { defineEmits, defineProps, ref } from 'vue';
+import { useUserStore } from '../../stores/userStore';
+const userStore = useUserStore();
+
+const email = ref('');
+const password = ref('');
+const userName = ref('');
 
 const props = defineProps({
 	isLogIn: Boolean
 });
-// interface LoginState {
-// 	email: string;
-// 	password: string;
-// }
-// interface SignupState {
-// 	email: string;
-// 	userName: string;
-// 	password: string;
-// 	confirmPassword: string;
-// }
+
 const emit = defineEmits(['closePanel', 'changeAction']);
 const closeLoginModal = () => {
 	emit('closePanel');
 };
 const changeAction = () => {
 	emit('changeAction');
+};
+const handleSubmit = () => {
+	if (props.isLogIn) {
+		console.log('Logging in...');
+	} else {
+		try {
+			userStore.signUp({
+				email: email.value,
+				password: password.value,
+				userName: userName.value
+			});
+			console.log('Signing up succes');
+		} catch (error) {
+			console.error(error);
+		}
+	}
 };
 </script>
 <style scoped>
