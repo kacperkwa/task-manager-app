@@ -2,11 +2,15 @@
 	<div class="overlay" @click="closeLoginModal"></div>
 	<div class="login-panel">
 		<h2 class="login-panel__title">
-			{{ props.isLogIn ? 'Your Tasks Await!' : 'Join the TaskMate Family!' }}
+			{{
+				props.isLoginAction
+					? 'Your Tasks Await!'
+					: 'Join the TaskMate Family!'
+			}}
 		</h2>
 		<p class="login-panel__info">
 			{{
-				props.isLogIn
+				props.isLoginAction
 					? `We’re thrilled to see you again! Dive back into your organized world of
 			tasks and projects, where every detail matters. With TaskMate, managing
 			your workload has never been easier!`
@@ -15,54 +19,76 @@
 		</p>
 		<form @submit.prevent="handleSubmit" class="login-panel__form">
 			<label for="email">Email Adress:</label>
-			<input v-model="email" type="text" id="email" />
-
-			<label v-if="!props.isLogIn" for="username">User name:</label>
 			<input
-				v-model="userName"
-				v-if="!props.isLogIn"
+				:class="{ 'input-error': !isValid }"
+				v-model="email"
 				type="text"
-				id="username" />
+				id="email"
+				placeholder="joenowak@xyz.com" />
+
+			<label v-if="!props.isLoginAction" for="username">User name:</label>
+			<input
+				:class="{ 'input-error': !isValid }"
+				v-model="userName"
+				v-if="!props.isLoginAction"
+				type="text"
+				id="username"
+				placeholder="Joe" />
 
 			<label for="password">Password:</label>
-			<input v-model="password" type="password" id="password" />
+			<input
+				:class="{ 'input-error': !isValid }"
+				v-model="password"
+				type="password"
+				id="password"
+				placeholder="Your password" />
 
-			<label v-if="!props.isLogIn" for="confirm-password"
-				>Confirm Password:</label
-			>
-			<input v-if="!props.isLogIn" type="password" id="confirm-password" />
+			<label v-if="!props.isLoginAction" for="confirm-password"
+				>Confirm Password:
+			</label>
+			<input
+				:class="{ 'input-error': !isValid }"
+				v-model="confirmPassword"
+				v-if="!props.isLoginAction"
+				type="password"
+				id="confirm-password"
+				placeholder="At least 6 characters long" />
 		</form>
 		<div class="login-panel__button-container">
 			<button
 				@click="handleSubmit"
 				class="login-panel__button primary-button">
-				{{ props.isLogIn ? `Log In` : `Sign Up` }}
+				{{ props.isLoginAction ? `Log In` : `Sign Up` }}
 			</button>
 
 			<p>
 				{{
-					isLogIn ? `Don't have an account?` : `Already have an account?`
+					isLoginAction
+						? `Don't have an account?`
+						: `Already have an account?`
 				}}
 			</p>
 			<button
 				@click="changeAction"
 				class="login-panel__button secondary-button">
-				{{ isLogIn ? `Sign Up instead!` : `Log In instead!` }}
+				{{ isLoginAction ? `Sign Up instead!` : `Log In instead!` }}
 			</button>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
 import { defineEmits, defineProps, ref } from 'vue';
-import { useUserStore } from '../../stores/userStore';
+import { useUserStore } from '../stores/userStore';
 const userStore = useUserStore();
 
 const email = ref('');
-const password = ref('');
 const userName = ref('');
+const password = ref('');
+const confirmPassword = ref('');
+const isValid = ref(true);
 
 const props = defineProps({
-	isLogIn: Boolean
+	isLoginAction: Boolean
 });
 
 const emit = defineEmits(['closePanel', 'changeAction']);
@@ -71,9 +97,39 @@ const closeLoginModal = () => {
 };
 const changeAction = () => {
 	emit('changeAction');
+	isValid.value = true;
+};
+const formValidation = (): boolean => {
+	isValid.value = true;
+	if (
+		!email.value ||
+		!password.value ||
+		(!props.isLoginAction && !userName.value)
+	) {
+		console.log('Please fill in all fields');
+		isValid.value = false;
+		return false;
+	} else if (
+		!props.isLoginAction &&
+		password.value !== confirmPassword.value
+	) {
+		console.log('Passwords do not match');
+		return false;
+		isValid.value = false;
+	} else if (!email.value.includes('@')) {
+		console.log('Invalid email');
+		isValid.value = false;
+		return false;
+	} else if (password.value.length < 6) {
+		console.log('Password must be at least 6 characters long');
+
+		return false;
+	}
+	return true;
 };
 const handleSubmit = () => {
-	if (props.isLogIn) {
+	if (!formValidation()) return;
+	if (props.isLoginAction) {
 		console.log('Logging in...');
 	} else {
 		try {
@@ -141,5 +197,8 @@ const handleSubmit = () => {
 }
 .login-panel__button-container p {
 	text-align: center;
+}
+.login-panel__form .input-error {
+	border: 2px solid red;
 }
 </style>
