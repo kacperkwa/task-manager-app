@@ -2,26 +2,29 @@
 	<header class="header">
 		<div class="header__left-container">
 			<img :class="logo" :src="logoSrc" alt="logo" v-show="logoLoaded" />
-			<div class="header__board-name" v-if="isLoggedIn">Board Name</div>
+			<div class="header__board-name" v-if="props.isLoggedIn">
+				Board Name
+			</div>
 			<ArrowButton />
 		</div>
 		<div class="header__right-container">
-			<AddButton v-if="isLoggedIn" />
-			<DottedButton v-if="isLoggedIn" />
+			<AddButton v-if="props.isLoggedIn" />
+			<DottedButton v-if="props.isLoggedIn" />
 		</div>
 	</header>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, defineProps } from 'vue';
 import ArrowButton from '../UI/ArrowButton.vue';
 import DottedButton from '../UI/DottedButton.vue';
 import AddButton from '../UI/AddButton.vue';
 
-const isLoggedIn = ref(false);
 const logoLoaded = ref(false);
 let logo = ref('header-log-small');
 let logoSrc = ref('/img/logo-taskmate.png');
-
+const props = defineProps({
+	isLoggedIn: Boolean
+});
 const updateLogo = () => {
 	const windowWidth = window.innerWidth;
 	const newLogo =

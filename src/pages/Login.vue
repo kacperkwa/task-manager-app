@@ -21,29 +21,30 @@
 				</button>
 			</div>
 
-			<loginPanel
-				v-if="loginModal"
+			<LoginModal
+				v-if="isLogingModalOpen"
 				@closePanel="closeLoginModal"
-				:isLogIn="isLogIn"
-				@changeAction="onChangeAction"></loginPanel>
+				:isLoginAction="isLoginAction"
+				@changeAction="onChangeAction"></LoginModal>
 		</main>
 	</div>
 </template>
 
 <script setup lang="ts">
+import LoginModal from '../auth/LoginModal.vue';
 import { ref } from 'vue';
-import loginPanel from './loginPanel.vue';
-const isLogIn = ref(true);
-const loginModal = ref(false);
-const openLoginModal = (isLogInValue: boolean) => {
-	loginModal.value = true;
-	isLogIn.value = isLogInValue;
+
+const isLoginAction = ref(true);
+const isLogingModalOpen = ref(false);
+const openLoginModal = (isLoginValue: boolean) => {
+	isLogingModalOpen.value = true;
+	isLoginAction.value = isLoginValue;
 };
 const onChangeAction = () => {
-	isLogIn.value = !isLogIn.value;
+	isLoginAction.value = !isLoginAction.value;
 };
 const closeLoginModal = () => {
-	loginModal.value = false;
+	isLogingModalOpen.value = false;
 };
 </script>
 

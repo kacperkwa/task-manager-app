@@ -2,11 +2,15 @@
 	<div class="overlay" @click="closeLoginModal"></div>
 	<div class="login-panel">
 		<h2 class="login-panel__title">
-			{{ props.isLogIn ? 'Your Tasks Await!' : 'Join the TaskMate Family!' }}
+			{{
+				props.isLoginAction
+					? 'Your Tasks Await!'
+					: 'Join the TaskMate Family!'
+			}}
 		</h2>
 		<p class="login-panel__info">
 			{{
-				props.isLogIn
+				props.isLoginAction
 					? `We’re thrilled to see you again! Dive back into your organized world of
 			tasks and projects, where every detail matters. With TaskMate, managing
 			your workload has never been easier!`
@@ -17,44 +21,49 @@
 			<label for="email">Email Adress:</label>
 			<input v-model="email" type="text" id="email" />
 
-			<label v-if="!props.isLogIn" for="username">User name:</label>
+			<label v-if="!props.isLoginAction" for="username">User name:</label>
 			<input
 				v-model="userName"
-				v-if="!props.isLogIn"
+				v-if="!props.isLoginAction"
 				type="text"
 				id="username" />
 
 			<label for="password">Password:</label>
 			<input v-model="password" type="password" id="password" />
 
-			<label v-if="!props.isLogIn" for="confirm-password"
+			<label v-if="!props.isLoginAction" for="confirm-password"
 				>Confirm Password:</label
 			>
-			<input v-if="!props.isLogIn" type="password" id="confirm-password" />
+			<input
+				v-if="!props.isLoginAction"
+				type="password"
+				id="confirm-password" />
 		</form>
 		<div class="login-panel__button-container">
 			<button
 				@click="handleSubmit"
 				class="login-panel__button primary-button">
-				{{ props.isLogIn ? `Log In` : `Sign Up` }}
+				{{ props.isLoginAction ? `Log In` : `Sign Up` }}
 			</button>
 
 			<p>
 				{{
-					isLogIn ? `Don't have an account?` : `Already have an account?`
+					isLoginAction
+						? `Don't have an account?`
+						: `Already have an account?`
 				}}
 			</p>
 			<button
 				@click="changeAction"
 				class="login-panel__button secondary-button">
-				{{ isLogIn ? `Sign Up instead!` : `Log In instead!` }}
+				{{ isLoginAction ? `Sign Up instead!` : `Log In instead!` }}
 			</button>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
 import { defineEmits, defineProps, ref } from 'vue';
-import { useUserStore } from '../../stores/userStore';
+import { useUserStore } from '../stores/userStore';
 const userStore = useUserStore();
 
 const email = ref('');
@@ -62,7 +71,7 @@ const password = ref('');
 const userName = ref('');
 
 const props = defineProps({
-	isLogIn: Boolean
+	isLoginAction: Boolean
 });
 
 const emit = defineEmits(['closePanel', 'changeAction']);
@@ -73,7 +82,7 @@ const changeAction = () => {
 	emit('changeAction');
 };
 const handleSubmit = () => {
-	if (props.isLogIn) {
+	if (props.isLoginAction) {
 		console.log('Logging in...');
 	} else {
 		try {
