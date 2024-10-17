@@ -19,25 +19,40 @@
 		</p>
 		<form @submit.prevent="handleSubmit" class="login-panel__form">
 			<label for="email">Email Adress:</label>
-			<input v-model="email" type="text" id="email" />
+			<input
+				:class="{ 'input-error': !isValid }"
+				v-model="email"
+				type="text"
+				id="email"
+				placeholder="joenowak@xyz.com" />
 
 			<label v-if="!props.isLoginAction" for="username">User name:</label>
 			<input
+				:class="{ 'input-error': !isValid }"
 				v-model="userName"
 				v-if="!props.isLoginAction"
 				type="text"
-				id="username" />
+				id="username"
+				placeholder="Joe" />
 
 			<label for="password">Password:</label>
-			<input v-model="password" type="password" id="password" />
+			<input
+				:class="{ 'input-error': !isValid }"
+				v-model="password"
+				type="password"
+				id="password"
+				placeholder="Your password" />
 
 			<label v-if="!props.isLoginAction" for="confirm-password"
-				>Confirm Password:</label
-			>
+				>Confirm Password:
+			</label>
 			<input
+				:class="{ 'input-error': !isValid }"
+				v-model="confirmPassword"
 				v-if="!props.isLoginAction"
 				type="password"
-				id="confirm-password" />
+				id="confirm-password"
+				placeholder="At least 6 characters long" />
 		</form>
 		<div class="login-panel__button-container">
 			<button
@@ -67,8 +82,10 @@ import { useUserStore } from '../stores/userStore';
 const userStore = useUserStore();
 
 const email = ref('');
-const password = ref('');
 const userName = ref('');
+const password = ref('');
+const confirmPassword = ref('');
+const isValid = ref(true);
 
 const props = defineProps({
 	isLoginAction: Boolean
@@ -80,8 +97,38 @@ const closeLoginModal = () => {
 };
 const changeAction = () => {
 	emit('changeAction');
+	isValid.value = true;
+};
+const formValidation = (): boolean => {
+	isValid.value = true;
+	if (
+		!email.value ||
+		!password.value ||
+		(!props.isLoginAction && !userName.value)
+	) {
+		console.log('Please fill in all fields');
+		isValid.value = false;
+		return false;
+	} else if (
+		!props.isLoginAction &&
+		password.value !== confirmPassword.value
+	) {
+		console.log('Passwords do not match');
+		return false;
+		isValid.value = false;
+	} else if (!email.value.includes('@')) {
+		console.log('Invalid email');
+		isValid.value = false;
+		return false;
+	} else if (password.value.length < 6) {
+		console.log('Password must be at least 6 characters long');
+
+		return false;
+	}
+	return true;
 };
 const handleSubmit = () => {
+	if (!formValidation()) return;
 	if (props.isLoginAction) {
 		console.log('Logging in...');
 	} else {
@@ -150,5 +197,8 @@ const handleSubmit = () => {
 }
 .login-panel__button-container p {
 	text-align: center;
+}
+.login-panel__form .input-error {
+	border: 2px solid red;
 }
 </style>
