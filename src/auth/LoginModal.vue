@@ -146,7 +146,21 @@ const formValidation = (): boolean => {
 const handleSubmit = async () => {
 	if (!formValidation()) return;
 	if (props.isLoginAction) {
-		await userStore.signIn({ email: email.value, password: password.value });
+		try {
+			await userStore.signIn({
+				email: email.value,
+				password: password.value
+			});
+		} catch (error: any) {
+			if (error.code === 'auth/invalid-credential') {
+				errorMessages.value = 'User not found';
+			} else if (error.code === 'auth/wrong-password') {
+				errorMessages.value = 'Wrong password';
+			} else {
+				errorMessages.value = 'Something went wrong';
+			}
+			isValid.value = false;
+		}
 		console.log('Logging in...');
 	} else {
 		try {
