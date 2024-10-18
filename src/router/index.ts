@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Login from '@/pages/Login.vue';
 import Home from '../pages/Home.vue';
-import { useUserStore } from '../stores/userStore';
+import { useUserStore } from '../stores/userAuthStore';
 
 const routes: Array<RouteRecordRaw> = [
 	{
@@ -29,16 +29,15 @@ router.beforeEach((to, _, next) => {
 	if (to.matched.some(record => record.meta.requiresAuth)) {
 		if (!userStore.isLoggedIn) {
 			next({ name: 'Login' });
-		} else if (
-			to.matched.some(record => record.meta.requiresAuth) &&
-			userStore.isLoggedIn
-		) {
-			next('/home');
 		} else {
 			next();
 		}
 	} else {
-		next();
+		if (to.name === 'Login' && userStore.isLoggedIn) {
+			next({ name: 'Home' });
+		} else {
+			next();
+		}
 	}
 });
 export default router;
