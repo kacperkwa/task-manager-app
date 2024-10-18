@@ -53,6 +53,9 @@
 				type="password"
 				id="confirm-password"
 				placeholder="At least 6 characters long" />
+			<p v-if="!isValid" class="invalid-form-message">
+				{{ errorMessages }}
+			</p>
 		</form>
 		<div class="login-panel__button-container">
 			<button
@@ -78,35 +81,45 @@
 </template>
 <script setup lang="ts">
 import { defineEmits, defineProps, ref } from 'vue';
-import { useUserStore } from '../stores/userStore';
-const userStore = useUserStore();
+import { useUserStore } from '../stores/userAuthStore';
 
+const userStore = useUserStore();
 const email = ref('');
 const userName = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 const isValid = ref(true);
-
+const errorMessages = ref('');
 const props = defineProps({
 	isLoginAction: Boolean
 });
 
 const emit = defineEmits(['closePanel', 'changeAction']);
+const resetForm = () => {
+	email.value = '';
+	userName.value = '';
+	password.value = '';
+	confirmPassword.value = '';
+};
 const closeLoginModal = () => {
 	emit('closePanel');
+	resetForm();
 };
 const changeAction = () => {
 	emit('changeAction');
 	isValid.value = true;
+	resetForm();
 };
 const formValidation = (): boolean => {
 	isValid.value = true;
+	errorMessages.value = '';
 	if (
 		!email.value ||
 		!password.value ||
 		(!props.isLoginAction && !userName.value)
 	) {
 		console.log('Please fill in all fields');
+		errorMessages.value = 'Please fill in all fields';
 		isValid.value = false;
 		return false;
 	} else if (
@@ -114,33 +127,57 @@ const formValidation = (): boolean => {
 		password.value !== confirmPassword.value
 	) {
 		console.log('Passwords do not match');
-		return false;
+		errorMessages.value = 'Passwords do not match';
 		isValid.value = false;
+		return false;
 	} else if (!email.value.includes('@')) {
 		console.log('Invalid email');
+		errorMessages.value = 'Invalid email';
 		isValid.value = false;
 		return false;
 	} else if (password.value.length < 6) {
 		console.log('Password must be at least 6 characters long');
-
+		errorMessages.value = 'Password must be at least 6 characters long';
+		isValid.value = false;
 		return false;
 	}
 	return true;
 };
-const handleSubmit = () => {
+const handleSubmit = async () => {
 	if (!formValidation()) return;
 	if (props.isLoginAction) {
+		try {
+			await userStore.signIn({
+				email: email.value,
+				password: password.value
+			});
+		} catch (error: any) {
+			if (error.code === 'auth/invalid-credential') {
+				errorMessages.value = 'User not found';
+			} else if (error.code === 'auth/wrong-password') {
+				errorMessages.value = 'Wrong password';
+			} else {
+				errorMessages.value = 'Something went wrong';
+			}
+			isValid.value = false;
+		}
 		console.log('Logging in...');
 	} else {
 		try {
-			userStore.signUp({
+			await userStore.signUp({
 				email: email.value,
 				password: password.value,
 				userName: userName.value
 			});
+
 			console.log('Signing up succes');
-		} catch (error) {
-			console.error(error);
+		} catch (error: any) {
+			if (error.code === 'auth/email-already-in-use') {
+				errorMessages.value = 'Email already in use';
+			} else {
+				errorMessages.value = 'Something went wrong';
+			}
+			isValid.value = false;
 		}
 	}
 };
@@ -200,5 +237,9 @@ const handleSubmit = () => {
 }
 .login-panel__form .input-error {
 	border: 2px solid red;
+}
+.invalid-form-message {
+	color: red;
+	text-align: center;
 }
 </style>

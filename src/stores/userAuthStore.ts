@@ -1,15 +1,19 @@
 import { defineStore } from 'pinia';
 import { auth } from '../firebaseConfig';
+import router from '../router/index';
 import {
 	UserCredential,
 	createUserWithEmailAndPassword,
-	updateProfile
+	updateProfile,
+	signInWithEmailAndPassword
 } from 'firebase/auth';
+
 interface User {
 	id: string;
 	email: string;
 	userName: string;
 }
+
 export const useUserStore = defineStore({
 	id: 'userStore',
 	state: () => ({
@@ -41,9 +45,32 @@ export const useUserStore = defineStore({
 					userName: userData.userName
 				};
 				this.isLoggedIn = true;
+				router.push('/home');
 				console.log('User registered:', this.user);
 			} catch (error) {
 				console.error(error);
+				throw error;
+			}
+		},
+		async signIn(userData: { email: string; password: string }) {
+			try {
+				const userCredential: UserCredential =
+					await signInWithEmailAndPassword(
+						auth,
+						userData.email,
+						userData.password
+					);
+				this.user = {
+					id: userCredential.user.uid,
+					email: userCredential.user.email || '',
+					userName: userCredential.user.displayName || ''
+				};
+				this.isLoggedIn = true;
+				router.push('/home');
+				console.log('User logged in:', this.user, this.user.id);
+			} catch (error) {
+				console.error(error);
+				throw error;
 			}
 		}
 	}

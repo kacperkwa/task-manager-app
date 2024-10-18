@@ -20,4 +20,10 @@ if (savedTheme) {
 	document.documentElement.setAttribute('data-theme', savedTheme);
 }
 </script>
-<style scoped></style>
+<style scoped>
+button {
+	position: fixed;
+	bottom: 1rem;
+	right: 1rem;
+}
+</style>
