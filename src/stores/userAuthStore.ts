@@ -49,7 +49,7 @@ export const useUserStore = defineStore({
 					userName: userData.userName
 				};
 				this.isLoggedIn = true;
-				router.push('/home');
+				router.push('/');
 				console.log('User registered:', this.user);
 			} catch (error) {
 				console.error(error);
@@ -71,7 +71,7 @@ export const useUserStore = defineStore({
 					userName: userCredential.user.displayName || ''
 				};
 				this.isLoggedIn = true;
-				router.push('/home');
+				router.push('/');
 				console.log('User logged in:', this.user, this.user.id);
 			} catch (error) {
 				console.error(error);
@@ -87,7 +87,7 @@ export const useUserStore = defineStore({
 						userName: user.displayName || ''
 					};
 					this.isLoggedIn = true;
-					router.push('/home');
+					router.push('/');
 					console.log('User logged in:', this.user);
 				} else {
 					this.user = null;

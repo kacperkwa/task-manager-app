@@ -5,12 +5,12 @@ import { useUserStore } from '../stores/userAuthStore';
 
 const routes: Array<RouteRecordRaw> = [
 	{
-		path: '/',
+		path: '/login',
 		name: 'Login',
 		component: Login
 	},
 	{
-		path: '/home',
+		path: '/',
 		name: 'Home',
 		component: Home,
 		meta: {

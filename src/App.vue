@@ -12,7 +12,6 @@ const userStore = useUserStore();
 
 onMounted(() => {
 	userStore.fetchUser();
-	console.log('Home page mounted');
 });
 const toggleTheme = () => {
 	const currentTheme = document.documentElement.getAttribute('data-theme');
