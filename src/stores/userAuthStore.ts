@@ -5,7 +5,10 @@ import {
 	UserCredential,
 	createUserWithEmailAndPassword,
 	updateProfile,
-	signInWithEmailAndPassword
+	signInWithEmailAndPassword,
+	setPersistence,
+	browserLocalPersistence,
+	onAuthStateChanged
 } from 'firebase/auth';
 
 interface User {
@@ -28,6 +31,7 @@ export const useUserStore = defineStore({
 			userName: string;
 		}) {
 			try {
+				await setPersistence(auth, browserLocalPersistence);
 				const userCredential: UserCredential =
 					await createUserWithEmailAndPassword(
 						auth,
@@ -45,7 +49,7 @@ export const useUserStore = defineStore({
 					userName: userData.userName
 				};
 				this.isLoggedIn = true;
-				router.push('/home');
+				router.push('/');
 				console.log('User registered:', this.user);
 			} catch (error) {
 				console.error(error);
@@ -54,6 +58,7 @@ export const useUserStore = defineStore({
 		},
 		async signIn(userData: { email: string; password: string }) {
 			try {
+				await setPersistence(auth, browserLocalPersistence);
 				const userCredential: UserCredential =
 					await signInWithEmailAndPassword(
 						auth,
@@ -66,12 +71,29 @@ export const useUserStore = defineStore({
 					userName: userCredential.user.displayName || ''
 				};
 				this.isLoggedIn = true;
-				router.push('/home');
+				router.push('/');
 				console.log('User logged in:', this.user, this.user.id);
 			} catch (error) {
 				console.error(error);
 				throw error;
 			}
+		},
+		async fetchUser() {
+			onAuthStateChanged(auth, user => {
+				if (user) {
+					this.user = {
+						id: user.uid,
+						email: user.email || '',
+						userName: user.displayName || ''
+					};
+					this.isLoggedIn = true;
+					router.push('/');
+					console.log('User logged in:', this.user);
+				} else {
+					this.user = null;
+					router.push('/login');
+				}
+			});
 		}
 	}
 });

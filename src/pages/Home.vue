@@ -1,15 +1,20 @@
 <template>
-	<h1>Hi You Are logged in! {{ userStore.user?.userName }}</h1>
+	<main>
+		<h1>Hi {{ userStore.user?.userName }}!</h1>
+		<p>Create a board and manage your tasks!</p>
+	</main>
 </template>
 <script setup lang="ts">
 import { useUserStore } from '../stores/userAuthStore';
 const userStore = useUserStore();
 </script>
 <style scoped>
-h1 {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100vh;
 }
 </style>
