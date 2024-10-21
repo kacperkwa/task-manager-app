@@ -6,7 +6,14 @@
 
 <script lang="ts" setup>
 import TheHeader from './components/TheHeader.vue';
+import { useUserStore } from './stores/userAuthStore';
+import { onMounted } from 'vue';
+const userStore = useUserStore();
 
+onMounted(() => {
+	userStore.fetchUser();
+	console.log('Home page mounted');
+});
 const toggleTheme = () => {
 	const currentTheme = document.documentElement.getAttribute('data-theme');
 	const newTheme = currentTheme === 'light' ? 'dark' : 'light';

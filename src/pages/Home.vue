@@ -1,5 +1,5 @@
 <template>
-	<h1>Hi You Are logged in! {{ userStore.user?.userName }}</h1>
+	<h1>Hi {{ userStore.user?.userName }}</h1>
 </template>
 <script setup lang="ts">
 import { useUserStore } from '../stores/userAuthStore';
