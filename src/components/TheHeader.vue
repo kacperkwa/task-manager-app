@@ -11,6 +11,7 @@
 			<AddButton v-if="userStore.isLoggedIn" />
 			<DottedButton v-if="userStore.isLoggedIn" />
 		</div>
+		<NavigationMobile />
 	</header>
 </template>
 <script setup lang="ts">
@@ -19,6 +20,7 @@ import { useUserStore } from '../stores/userAuthStore';
 import ArrowButton from '../UI/ArrowButton.vue';
 import DottedButton from '../UI/DottedButton.vue';
 import AddButton from '../UI/AddButton.vue';
+import NavigationMobile from './NavigationMobile.vue';
 const userStore = useUserStore();
 const logoLoaded = ref(false);
 let logo = ref('header-log-small');
