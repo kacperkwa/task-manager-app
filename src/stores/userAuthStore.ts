@@ -88,12 +88,23 @@ export const useUserStore = defineStore({
 					};
 					this.isLoggedIn = true;
 					router.push('/');
-					console.log('User logged in:', this.user);
 				} else {
 					this.user = null;
 					router.push('/login');
 				}
 			});
+		},
+		async signOut() {
+			try {
+				await auth.signOut();
+				this.user = null;
+				this.isLoggedIn = false;
+				router.push('/login');
+				console.log('User logged out');
+			} catch (error) {
+				console.error(error);
+				throw error;
+			}
 		}
 	}
 });
