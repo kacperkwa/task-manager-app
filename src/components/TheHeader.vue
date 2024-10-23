@@ -5,13 +5,16 @@
 			<div class="header__board-name" v-if="userStore.isLoggedIn">
 				Board Name
 			</div>
-			<ArrowButton />
+			<ArrowButton
+				v-if="userStore.isLoggedIn"
+				@click="openNav"
+				:isRotated="rotateBtn()" />
 		</div>
 		<div class="header__right-container">
 			<AddButton v-if="userStore.isLoggedIn" />
 			<DottedButton v-if="userStore.isLoggedIn" />
 		</div>
-		<NavigationMobile />
+		<NavigationMobile v-if="isNavOpen" @closeNav="closeNav" />
 	</header>
 </template>
 <script setup lang="ts">
@@ -21,15 +24,31 @@ import ArrowButton from '../UI/ArrowButton.vue';
 import DottedButton from '../UI/DottedButton.vue';
 import AddButton from '../UI/AddButton.vue';
 import NavigationMobile from './NavigationMobile.vue';
+
 const userStore = useUserStore();
 const logoLoaded = ref(false);
+const isNavOpen = ref(false);
 let logo = ref('header-log-small');
 let logoSrc = ref('/img/logo-taskmate.png');
 
+const openNav = () => {
+	isNavOpen.value = true;
+};
+const rotateBtn = () => {
+	if (isNavOpen.value) {
+		return true;
+	} else {
+		return false;
+	}
+};
+const closeNav = () => {
+	isNavOpen.value = false;
+};
 const updateLogo = () => {
 	const windowWidth = window.innerWidth;
+
 	const newLogo =
-		windowWidth < 768
+		windowWidth < 768 && userStore.isLoggedIn
 			? '/img/logo-taskmate-bulb.png'
 			: '/img/logo-taskmate.png';
 
@@ -39,7 +58,10 @@ const updateLogo = () => {
 		logoLoaded.value = true;
 	};
 
-	logo.value = windowWidth < 768 ? 'header-logo-small' : 'header-logo';
+	logo.value =
+		windowWidth < 768 && userStore.isLoggedIn
+			? 'header-logo-small'
+			: 'header-logo';
 
 	if (newLogo !== logoSrc.value) {
 		logoLoaded.value = false;
@@ -55,11 +77,16 @@ onMounted(() => {
 watch(logoSrc, () => {
 	const img = new Image();
 	img.src = logoSrc.value;
-
 	img.onload = () => {
 		logoLoaded.value = true; //
 	};
 });
+watch(
+	() => userStore.isLoggedIn,
+	() => {
+		updateLogo();
+	}
+);
 
 onBeforeUnmount(() => {
 	window.removeEventListener('resize', updateLogo);
@@ -96,5 +123,10 @@ onBeforeUnmount(() => {
 	font-size: 1.6rem;
 	font-weight: 500;
 	margin-left: 1rem;
+}
+@media (max-width: 768px) {
+	.header-logo {
+		width: 160px;
+	}
 }
 </style>

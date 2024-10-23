@@ -1,24 +1,36 @@
 <template>
 	<div class="button-container">
 		<i class="fa-solid fa-moon"></i>
-		<input @click="toggleTheme" id="toggle" type="checkbox" />
+		<input
+			@click="toggleTheme"
+			id="toggle"
+			type="checkbox"
+			:checked="isLightTheme" />
 		<label for="toggle"></label>
 		<i class="fa-solid fa-sun"></i>
 	</div>
 </template>
 <script setup lang="ts">
-const toggleTheme = () => {
-	const currentTheme = document.documentElement.getAttribute('data-theme');
-	const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-	document.documentElement.setAttribute('data-theme', newTheme);
+import { ref, onMounted } from 'vue';
+const isLightTheme = ref(false);
 
+const toggleTheme = () => {
+	const newTheme = isLightTheme.value ? 'dark' : 'light';
+	isLightTheme.value = !isLightTheme.value;
+	document.documentElement.setAttribute('data-theme', newTheme);
 	localStorage.setItem('theme', newTheme);
 };
 
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) {
-	document.documentElement.setAttribute('data-theme', savedTheme);
-}
+
+onMounted(() => {
+	const savedTheme = localStorage.getItem('theme');
+	if (savedTheme) {
+		document.documentElement.setAttribute('data-theme', savedTheme);
+		isLightTheme.value = savedTheme === 'light';
+	} else {
+		document.documentElement.setAttribute('data-theme', 'dark');
+	}
+});
 </script>
 <style scoped>
 .button-container {

@@ -16,15 +16,26 @@
 
 			<ToggleTheme />
 
-			<button class="navigation__logout-button">Logout</button>
+			<button
+				@click="signOut"
+				class="navigation__logout-button primary-button">
+				Logout
+			</button>
 		</div>
 	</nav>
 </template>
 <script setup lang="ts">
+import { defineEmits } from 'vue';
+import { useUserStore } from '../stores/userAuthStore';
 import ToggleTheme from '../UI/ToggleTheme.vue';
-
+const useAuthStore = useUserStore();
+const emit = defineEmits(['closeNav']);
+const signOut = () => {
+	useAuthStore.signOut();
+	closeNav();
+};
 const closeNav = () => {
-	console.log('close');
+	emit('closeNav');
 };
 </script>
 <style scoped>
@@ -83,5 +94,8 @@ const closeNav = () => {
 	background-color: transparent;
 	color: var(--button-text-color-secondary);
 	font-size: 1.5rem;
+}
+.navigation__logout-button {
+	padding: 1rem 2rem;
 }
 </style>
