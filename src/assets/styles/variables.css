@@ -20,6 +20,7 @@
 	--header-background-color: #2b2c37;
 	/* inputs */
 	--input-border-color: rgba(130, 143, 163, 25);
+	--overlay-color: rgba(0, 0, 0, 0.5);
 }
 
 [data-theme='light'] {
