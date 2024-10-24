@@ -10,7 +10,7 @@
 				<li class="navigation__list-item">+ Platform Lunch</li>
 				<li class="navigation__list-item">+ Platform Lunch</li>
 			</ul>
-			<button class="navigation__create-board-button">
+			<button @click="openBoardForm" class="navigation__create-board-button">
 				+ Create New Board
 			</button>
 
@@ -27,7 +27,10 @@
 <script setup lang="ts">
 import { defineEmits } from 'vue';
 import { useUserStore } from '../stores/userAuthStore';
+import { useBoardStore } from '../stores/boardStore';
 import ToggleTheme from '../UI/ToggleTheme.vue';
+
+const boardStore = useBoardStore();
 const useAuthStore = useUserStore();
 const emit = defineEmits(['closeNav']);
 const signOut = () => {
@@ -37,6 +40,10 @@ const signOut = () => {
 const closeNav = () => {
 	emit('closeNav');
 };
+const openBoardForm = () => {
+	boardStore.openBoardForm();
+	closeNav();
+};
 </script>
 <style scoped>
 .overlay {
@@ -45,7 +52,7 @@ const closeNav = () => {
 	left: 0;
 	width: 100%;
 	height: 100vh;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: var(--overlay-color);
 	z-index: 100;
 }
 .navigation {
