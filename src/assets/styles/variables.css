@@ -21,6 +21,7 @@
 	/* inputs */
 	--input-border-color: rgba(130, 143, 163, 25);
 	--overlay-color: rgba(0, 0, 0, 0.5);
+	--input-focus-color: #635fc7;
 }
 
 [data-theme='light'] {

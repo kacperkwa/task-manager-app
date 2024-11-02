@@ -1,5 +1,6 @@
 <template>
 	<div class="board-form__container" @click="closeBoardForm">
+		<div tabindex="0" @focus="focusLastElement"></div>
 		<form class="board-form" @click.stop>
 			<h3>Add New Board</h3>
 			<label for="board-form__input">Board Name</label>
@@ -14,14 +15,45 @@
 			<button class="secondary-button">Add New Column</button>
 			<button class="primary-button">Create New Board</button>
 		</form>
+		<div tabindex="0" @focus="focusFirstElement"></div>
 	</div>
 </template>
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { useBoardStore } from '../stores/boardStore';
 const boardStore = useBoardStore();
 const closeBoardForm = () => {
 	boardStore.closeBoardForm();
 };
+
+let firstFocusableElement: HTMLElement | null = null;
+let lastFocusableElement: HTMLElement | null = null;
+
+const focusFirstElement = () => {
+	(firstFocusableElement as unknown as HTMLElement)?.focus();
+};
+const focusLastElement = () => {
+	(lastFocusableElement as unknown as HTMLElement)?.focus();
+};
+
+onMounted(() => {
+	const focusableElements = document.querySelectorAll(
+		'.board-form input, .board-form button, .board-form a'
+	);
+
+	if (focusableElements.length > 0) {
+		firstFocusableElement = focusableElements[0] as HTMLElement;
+		lastFocusableElement = focusableElements[
+			focusableElements.length - 1
+		] as HTMLElement;
+	}
+	firstFocusableElement?.focus();
+	document.addEventListener('keydown', e => {
+		if (e.key === 'Escape') {
+			closeBoardForm();
+		}
+	});
+});
 </script>
 <style scoped>
 .board-form__container {
@@ -53,6 +85,10 @@ const closeBoardForm = () => {
 	border: 1px solid var(--input-border-color);
 	color: var(--text-color);
 	background-color: transparent;
+}
+.board-form__input:focus {
+	outline: none;
+	border-color: var(--input-focus-color);
 }
 .primary-button,
 .secondary-button {
