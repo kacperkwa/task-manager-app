@@ -3,24 +3,41 @@
 		<form class="board-form" @click.stop>
 			<h3>Add New Board</h3>
 			<label for="board-form__input">Board Name</label>
-			<input type="text" class="board-form__input" />
+			<input
+				v-model="boardName"
+				type="text"
+				class="board-form__input"
+				placeholder="e.g. Platform Launch" />
 
 			<label for="columns">Board Columns</label>
 			<div class="board-form__input-container">
-				<input type="text" class="board-form__input" id="columns" />
+				<input
+					v-model="boardColumns"
+					type="text"
+					class="board-form__input"
+					id="columns"
+					placeholder="e.g. Todo" />
 				<p>X</p>
 			</div>
 
 			<button class="secondary-button">Add New Column</button>
-			<button class="primary-button">Create New Board</button>
+			<button class="primary-button" @click="createBoard">
+				Create New Board
+			</button>
 		</form>
 	</div>
 </template>
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useBoardStore } from '../stores/boardStore';
 const boardStore = useBoardStore();
+const boardName = ref('');
+const boardColumns = ref([]);
 const closeBoardForm = () => {
 	boardStore.closeBoardForm();
+};
+const createBoard = () => {
+	boardStore.createBoard(boardName.value, boardColumns.value);
 };
 </script>
 <style scoped>
