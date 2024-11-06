@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { db } from '../firebaseConfig';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useUserStore } from './userAuthStore';
-import { Board, Column, Task, Subtask } from '../types/boardTypes';
+import { Board, Column } from '../types/boardTypes';
 
 export const useBoardStore = defineStore({
 	id: 'boardStore',
