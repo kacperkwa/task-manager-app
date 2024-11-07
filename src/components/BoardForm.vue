@@ -10,9 +10,12 @@
 				placeholder="e.g. Platform Launch" />
 
 			<label for="columns">Board Columns</label>
-			<div class="board-form__input-container">
+			<div
+				v-for="(column, index) in columns"
+				:key="index"
+				class="board-form__input-container">
 				<input
-					v-model="boardColumns"
+					v-model="column.name"
 					type="text"
 					class="board-form__input"
 					id="columns"
@@ -20,8 +23,8 @@
 				<p>X</p>
 			</div>
 
-			<button class="secondary-button">Add New Column</button>
-			<button class="primary-button" @click="createBoard">
+			<button type="button" class="secondary-button">Add New Column</button>
+			<button type="button" class="primary-button" @click="createBoard">
 				Create New Board
 			</button>
 		</form>
@@ -32,12 +35,13 @@ import { ref } from 'vue';
 import { useBoardStore } from '../stores/boardStore';
 const boardStore = useBoardStore();
 const boardName = ref('');
-const boardColumns = ref([]);
+const columnName = ref([]);
+const columns = ref([{ name: '' }]);
 const closeBoardForm = () => {
 	boardStore.closeBoardForm();
 };
 const createBoard = () => {
-	boardStore.createBoard(boardName.value, boardColumns.value);
+	boardStore.createBoard(boardName.value, columnName.value);
 };
 </script>
 <style scoped>
