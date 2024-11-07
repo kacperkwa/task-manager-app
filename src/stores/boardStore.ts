@@ -18,18 +18,15 @@ export const useBoardStore = defineStore({
 		closeBoardForm() {
 			this.isBoardFormOpen = false;
 		},
-		async createBoard(
-			title: string,
-			columns: Column[],
-			isCollaborative = false
-		) {
+
+		async createBoard(title: string, columns: Column[]) {
 			const userStore = useUserStore();
 			if (!userStore.user) return;
 
 			const newBoard: Omit<Board, 'id'> = {
 				title,
 				columns,
-				isCollaborative
+				isCollaborative: null
 			};
 			try {
 				const boardRef = await addDoc(collection(db, 'boards'), {
@@ -41,6 +38,8 @@ export const useBoardStore = defineStore({
 			} catch (error) {
 				console.error('Error creating board:', error);
 			}
-		}
+		},
+		
+
 	}
 });

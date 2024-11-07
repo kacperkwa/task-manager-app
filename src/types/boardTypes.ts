@@ -2,18 +2,23 @@ export type Board = {
 	id: string;
 	title: string;
 	columns: Column[];
-	isCollaborative: boolean;
+	isCollaborative: boolean | null;
 };
 
 export type Column = {
 	id: string;
-	title: string;
+	name: string;
 	tasks: Task[];
+};
+
+export type ColumnName = {
+	id: string;
+	name: string;
 };
 
 export type Task = {
 	id: string;
-	title: string;
+	name: string;
 	description: string;
 	subtasks: Subtask[];
 	status: string;
@@ -21,6 +26,6 @@ export type Task = {
 
 export type Subtask = {
 	id: string;
-	title: string;
+	name: string;
 	isDone: boolean;
 };
