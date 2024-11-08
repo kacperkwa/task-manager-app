@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Login from '@/pages/Login.vue';
-import Home from '../pages/Home.vue';
+import Home from '@/pages/Home.vue';
 import { useUserStore } from '../stores/userAuthStore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
