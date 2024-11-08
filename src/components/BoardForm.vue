@@ -20,10 +20,12 @@
 					class="board-form__input"
 					id="columns"
 					placeholder="e.g. Todo" />
-				<p>X</p>
+				<p @click="removeColumn(index)">X</p>
 			</div>
 
-			<button type="button" class="secondary-button">Add New Column</button>
+			<button type="button" class="secondary-button" @click="addColumn">
+				Add New Column
+			</button>
 			<button type="button" class="primary-button" @click="createBoard">
 				Create New Board
 			</button>
@@ -32,16 +34,29 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
+import { v4 as uuidv4 } from 'uuid';
 import { useBoardStore } from '../stores/boardStore';
+
 const boardStore = useBoardStore();
 const boardName = ref('');
-const columnName = ref([]);
-const columns = ref([{ name: '' }]);
+const columns = ref([{ id: uuidv4(), name: '', tasks: [] }]);
 const closeBoardForm = () => {
 	boardStore.closeBoardForm();
 };
+const addColumn = () => {
+	columns.value.push({ id: uuidv4(), name: '', tasks: [] });
+};
 const createBoard = () => {
-	boardStore.createBoard(boardName.value, columnName.value);
+	const columnData = columns.value.map(col => ({
+		id: col.id,
+		name: col.name,
+		tasks: []
+	}));
+	boardStore.createBoard(boardName.value, columnData);
+	closeBoardForm();
+};
+const removeColumn = (index: number) => {
+	columns.value.splice(index, 1);
 };
 </script>
 <style scoped>
@@ -85,6 +100,9 @@ const createBoard = () => {
 	align-items: center;
 	justify-content: space-between;
 	gap: 1rem;
+}
+.board-form__input-container p {
+	cursor: pointer;
 }
 label {
 	margin-top: 2rem;
