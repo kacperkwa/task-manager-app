@@ -29,17 +29,18 @@ export const useBoardStore = defineStore({
 				isCollaborative: null
 			};
 			try {
-				const boardRef = await addDoc(collection(db, 'boards'), {
-					...newBoard,
-					createdAt: serverTimestamp(),
-					userId: userStore.user.id
-				});
+				const boardRef = await addDoc(
+					collection(db, `Users/${userStore.user.id}/Boards`),
+					{
+						...newBoard,
+						createdAt: serverTimestamp(),
+						userId: userStore.user.id
+					}
+				);
 				console.log('board created with ID:', boardRef.id);
 			} catch (error) {
 				console.error('Error creating board:', error);
 			}
-		},
-		
-
+		}
 	}
 });
