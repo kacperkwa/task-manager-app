@@ -1,5 +1,7 @@
 @import 'reset.css';
 @import 'variables.css';
+@import 'swiper/swiper-bundle.css';
+
 
 body {
 	font-family: 'Plus Jakarta Sans', sans-serif;
@@ -10,7 +12,6 @@ body {
 /* buttons */
 button {
 	cursor: pointer;
-	padding: 0.5rem 2rem;
 	border: none;
 	border-radius: 20px;
 	font-size: 13px;
