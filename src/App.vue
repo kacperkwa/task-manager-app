@@ -1,6 +1,6 @@
 <template>
 	<TheHeader />
-	<BoardForm v-if="boardStore.isBoardFormOpen"></BoardForm>
+	<BoardForm v-if="boardStore.isBoardFormOpen" />
 	<router-view />
 </template>
 
@@ -15,18 +15,21 @@ const userStore = useUserStore();
 const boardStore = useBoardStore();
 
 const isLoading = ref(true);
-onMounted(() => {
+onMounted(async () => {
 	const savedTheme = localStorage.getItem('theme');
 	const theme = savedTheme || 'dark';
 	document.documentElement.setAttribute('data-theme', theme);
-	userStore.fetchUser();
-	isLoading.value = false;
 });
-</script>
-<style scoped>
-button {
-	position: fixed;
-	bottom: 1rem;
-	right: 1rem;
+
+async function initializeApp() {
+	await userStore.fetchUser();
+
+	if (userStore.isLoggedIn) {
+		await boardStore.fetchBoards();
+	}
+
+	isLoading.value = false;
 }
-</style>
+
+initializeApp();
+</script>

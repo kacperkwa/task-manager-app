@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { auth } from '../firebaseConfig';
+import { auth, db } from '../firebaseConfig';
 import router from '../router/index';
 import {
 	UserCredential,
@@ -10,6 +10,7 @@ import {
 	browserLocalPersistence,
 	onAuthStateChanged
 } from 'firebase/auth';
+import { collection, getDocs } from 'firebase/firestore';
 
 interface User {
 	id: string;
@@ -49,7 +50,7 @@ export const useUserStore = defineStore({
 					userName: userData.userName
 				};
 				this.isLoggedIn = true;
-				router.push('/');
+				router.push('/dashboard');
 				console.log('User registered:', this.user);
 			} catch (error) {
 				console.error(error);
@@ -71,7 +72,7 @@ export const useUserStore = defineStore({
 					userName: userCredential.user.displayName || ''
 				};
 				this.isLoggedIn = true;
-				router.push('/');
+				router.push('/dashboard');
 				console.log('User logged in:', this.user, this.user.id);
 			} catch (error) {
 				console.error(error);
@@ -79,19 +80,21 @@ export const useUserStore = defineStore({
 			}
 		},
 		async fetchUser() {
-			onAuthStateChanged(auth, user => {
-				if (user) {
-					this.user = {
-						id: user.uid,
-						email: user.email || '',
-						userName: user.displayName || ''
-					};
-					this.isLoggedIn = true;
-					router.push('/');
-				} else {
-					this.user = null;
-					router.push('/login');
-				}
+			return new Promise<void>(resolve => {
+				onAuthStateChanged(auth, user => {
+					if (user) {
+						this.user = {
+							id: user.uid,
+							email: user.email || '',
+							userName: user.displayName || ''
+						};
+						this.isLoggedIn = true;
+					} else {
+						this.user = null;
+						this.isLoggedIn = false;
+					}
+					resolve();
+				});
 			});
 		},
 		async signOut() {
@@ -105,6 +108,16 @@ export const useUserStore = defineStore({
 				console.error(error);
 				throw error;
 			}
+		},
+		async checkUserHasBoard() {
+			if (!this.user) return false;
+
+			const userBoardsCollection = collection(
+				db,
+				`Users/${this.user.id}/Boards`
+			);
+			const querySnapshot = await getDocs(userBoardsCollection);
+			return !querySnapshot.empty;
 		}
 	}
 });

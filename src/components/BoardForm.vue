@@ -7,6 +7,7 @@
 				v-model="boardName"
 				type="text"
 				class="board-form__input"
+				id="board-form__input"
 				placeholder="e.g. Platform Launch" />
 
 			<label for="columns">Board Columns</label>
