@@ -6,7 +6,7 @@
 			<swiper
 				:modules="modules"
 				:slides-per-view="1"
-				:space-between="50"
+				:space-between="10"
 				:navigation="{
 					nextEl: '.swiper-button-next',
 					prevEl: '.swiper-button-prev'
@@ -16,8 +16,8 @@
 					<BoardCard :board="board" />
 				</swiper-slide>
 			</swiper>
-			<div class="swiper-button-prev"></div>
-			<div class="swiper-button-next"></div>
+			<!-- <div class="swiper-button-prev"></div>
+			<div class="swiper-button-next"></div> -->
 		</div>
 		<div v-else>
 			<p>No boards found.</p>
@@ -56,21 +56,24 @@ onMounted(async () => {
 }
 .swiper-container {
 	position: relative;
-	width: 100%;
-	max-width: 320px;
+	width: 90%;
 }
 .swiper {
-	width: 100%;
-	max-width: 320px;
-	/* padding: 4rem; */
-	/* background-color: red; */
+	width: 250px;
+	height: 250px;
+	padding: 3rem;
+	border-radius: 50%;
+	border: 1px solid var(--text-color-secondary);
+	box-shadow: 0 0 15px var(--text-color-secondary);
+	background-color: var(--header-background-color);
+	cursor: pointer;
 }
-.swiper-button-prev,
+/* .swiper-button-prev,
 .swiper-button-next {
 	color: blue;
 	position: absolute;
 	top: 50%;
-}
+} */
 .swiper-button-prev {
 	left: -20px;
 }

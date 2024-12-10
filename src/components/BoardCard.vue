@@ -17,11 +17,6 @@ const props = defineProps<{ board: Board }>();
 	justify-content: center;
 	gap: 4rem;
 	padding: 2rem;
-	width: 200px;
-	height: 200px;
-	background-color: rgba(25, 21, 32, 0.051);
-	border-radius: 50%;
-	backdrop-filter: blur(10px);
 }
 .primary-button {
 	padding: 1rem;
